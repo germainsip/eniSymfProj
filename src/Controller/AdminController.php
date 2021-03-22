@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
+use App\Form\ProduitType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -20,17 +22,15 @@ class AdminController extends AbstractController
      */
     public function insert(Request $request): Response
     {
-        $form=$this->createFormBuilder()
-            ->add('nom', TextType::class)
-            ->add('date',DateType::class)
-            ->add('save',SubmitType::class,['label'=>'Insérer un produit'])
-            ->getForm();
-
-        if ($request->isMethod('post')){
-            return new JsonResponse($request->request->all());
-        }
+       $produit = new Produit();
+       $formProduit = $this->createForm(ProduitType::class,$produit);
+       $formProduit->add('creer',SubmitType::class,array('label'=>'Insertion d\'un produit'));
+       if($request->isMethod('post')){
+           return new JsonResponse($request->request->all()
+           );
+       }
         return $this->render('admin/create.html.twig',
-        array('my_form'=>$form->createView())
+        array('my_form'=>$formProduit->createView())
         );
     }
 

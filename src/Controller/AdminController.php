@@ -22,15 +22,36 @@ class AdminController extends AbstractController
      */
     public function insert(Request $request): Response
     {
-       $produit = new Produit();
-       $formProduit = $this->createForm(ProduitType::class,$produit);
-       $formProduit->add('creer',SubmitType::class,array('label'=>'Insertion d\'un produit'));
-       if($request->isMethod('post')){
-           return new JsonResponse($request->request->all()
-           );
-       }
+        $produit = new Produit();
+        $formProduit = $this->createForm(ProduitType::class, $produit);
+        $formProduit->add('creer', SubmitType::class, array('label' => 'Insertion d\'un produit'));
+        $formProduit->handleRequest($request);
+
+        if ($request->isMethod('post') && $formProduit->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $file = $formProduit['lienImage']->getData();
+
+            if (!is_string($file)) {
+                $filename = $file->getClientOriginalName();
+                $file->move(
+                    $this->getParameter('images_directory'),
+                    $filename);
+                $produit->setLienImage($filename);
+            } else {
+                $session = $request->getSession();
+                $session->getFlashBag()->add('message', 'Vous devez choisir une image pour le produit');
+                $session->set('statut', 'danger');
+                return $this->redirect($this->generateUrl('insert'));
+            }
+            $em->persist($produit);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('insert'));
+
+
+        }
         return $this->render('admin/create.html.twig',
-        array('my_form'=>$formProduit->createView())
+            array('my_form' => $formProduit->createView())
         );
     }
 

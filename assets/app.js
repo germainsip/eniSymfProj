@@ -7,6 +7,14 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+import $ from 'jquery';
+import 'bootstrap';
+$(document).ready(function() {
+    $('[data-toggle="popover"]').popover();
+});
 
-// start the Stimulus application
-import './bootstrap';
+$(".custom-file-input").on("change", function() {
+    var fileName = $(this).val().split("\\").pop();
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+});
+

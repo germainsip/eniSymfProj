@@ -5,7 +5,30 @@ Administration du site
 
 {% block body %}
 <div class="d-flex justify-content-center">
-    {{ form(my_form) }}
+{#    {{ form(my_form) }}#}
+    {{ form_start(my_form) }}
+    {{ form_errors(my_form) }}
+    <div class="form-group">
+        {{ form_label(my_form.nom) }}
+        {{ form_widget(my_form.nom, {'attr': {'class':'form-control'}}) }}
+        {{ form_errors(my_form.nom) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(my_form.prix) }}
+        {{ form_widget(my_form.prix, {'attr': {'class':'form-control'}}) }}
+        {{ form_errors(my_form.prix) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(my_form.quantite) }}
+        {{ form_widget(my_form.quantite, {'attr': {'class':'form-control'}}) }}
+        {{ form_errors(my_form.quantite) }}
+    </div>
+    <div class="form-group">
+        {{ form_label(my_form.rupture) }}
+        {{ form_widget(my_form.rupture, {'attr': {'class':'form-control'}}) }}
+        {{ form_errors(my_form.rupture) }}
+    </div>
+    {{ form_end(my_form) }}
 </div>
 {% endblock %}
 

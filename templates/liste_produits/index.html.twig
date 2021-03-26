@@ -6,6 +6,7 @@
     <div class="alert alert-primary">
         Réduction de 20% sur les {{ lastproduit.nom }}
     </div>
+    <a class="btn btn-dark" href="{{ path('insert') }}">Ajouter un produit</a>
     <div class="d-flex flex-row justify-content-around flex-wrap">
         {% for produit in listeproduits %}
             <div class="card shadow" style="width: 18rem">

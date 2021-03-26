@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ListeProduitsController extends AbstractController
 {
     /**
-     * @Route("/liste", name="liste")
+     * @Route("/", name="liste")
      */
     public function index(): Response
     {

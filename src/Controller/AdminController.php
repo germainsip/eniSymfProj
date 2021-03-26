@@ -129,7 +129,6 @@ class AdminController extends AbstractController
         //dd($produit);
         $em->remove($produit);
         $em->flush();
-        dd($this->getParameter('images_directory'));
         unlink($this->getParameter('images_directory').$produit->getLienImage());
         $session = $request->getSession();
         $session->getFlashBag()->add('message','le produit a été supprimé');

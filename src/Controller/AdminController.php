@@ -45,8 +45,10 @@ class AdminController extends AbstractController
             }
             $em->persist($produit);
             $em->flush();
-
-            return $this->redirect($this->generateUrl('insert'));
+            $session = $request->getSession();
+            $session->getFlashBag()->add('message', 'Un nouveau produit a été ajouté');
+            $session->set('status', 'success');
+            return $this->redirect($this->generateUrl('liste'));
 
 
         }
@@ -61,7 +63,7 @@ class AdminController extends AbstractController
      * @param $id
      * @return Response
      */
-    public function update(Request $request,$id): Response
+    public function update(Request $request, $id): Response
     {
         return $this->render('admin/create.html.twig');
     }
@@ -71,7 +73,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @param $id
      */
-    public function delete(Request $request,$id)
+    public function delete(Request $request, $id)
     {
     }
 }

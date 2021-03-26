@@ -6,10 +6,10 @@
     <div class="alert alert-primary">
         Réduction de 20% sur les {{ lastproduit.nom }}
     </div>
-    <a class="btn btn-dark" href="{{ path('insert') }}">Ajouter un produit</a>
+    <a class="btn btn-dark ml-1" href="{{ path('insert') }}">Ajouter un produit</a>
     <div class="d-flex flex-row justify-content-around flex-wrap">
         {% for produit in listeproduits %}
-            <div class="card shadow" style="width: 18rem">
+            <div class="card shadow m-1" style="width: 18rem">
                 <img class="card-img-top" src="{{ asset('img/'~produit.lienImage) }}" alt="{{ produit.nom }}"
                      height="200px">
                 <div class="card-body">

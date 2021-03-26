@@ -7,46 +7,55 @@
         Réduction de 20% sur les {{ lastproduit.nom }}
     </div>
     <a class="btn btn-dark ml-1" href="{{ path('insert') }}">Ajouter un produit</a>
-    <div class="d-flex flex-row justify-content-around flex-wrap">
-        {% for produit in listeproduits %}
-            <div class="card shadow m-1" style="width: 18rem">
-                <img class="card-img-top" src="{{ asset('img/'~produit.lienImage) }}" alt="{{ produit.nom }}"
-                     height="200px">
-                <div class="card-body">
-                    <h5 class="card-title">{{ produit.nom }}</h5>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            {% if produit.reference is not null %}
-                                Référence: {{ produit.reference.numero }}
-                            {% endif %}
-                        </li>
-                        <li class="list-group-item">
-                            {% if produit.distributeurs is not empty %}
-                                {% for distributeur in produit.distributeurs %}
-                                    {{ distributeur.nom }}&nbsp;
-                                {% endfor %}
-                            {% else %}
-                                pas de distributeur
-                            {% endif %}
-                        </li>
-                        <li class="list-group-item">
-                            Prix: {{ produit.prix }} Euros
-                        </li>
-                        <li class="list-group-item">
-                            {% if produit.rupture %}
-                                <strong>Rupture de stock</strong>
-                            {% else %}
-                                Quantité: {{ produit.quantite }}
-                            {% endif %}
-                        </li>
-
-                    </ul>
+    <div class="container">
+        <div class="row">
+            {% for produit in listeproduits %}
+                <div class="card shadow m-3 col-sm-3" >
+                    <img class="card-img-top" src="{{ asset('img/'~produit.lienImage) }}" alt="{{ produit.nom }}"
+                         height="200em">
                     <div class="card-body">
-                        <a href="#" class="btn btn-primary">Ajouter au panier</a>
+                        <h5 class="card-title">{{ produit.nom }}</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                {% if produit.reference is not null %}
+                                    Référence: {{ produit.reference.numero }}
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item">
+                                {% if produit.distributeurs is not empty %}
+                                    {% for distributeur in produit.distributeurs %}
+                                        {{ distributeur.nom }}&nbsp;
+                                    {% endfor %}
+                                {% else %}
+                                    pas de distributeur
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item">
+                                Prix: {{ produit.prix }} Euros
+                            </li>
+                            <li class="list-group-item">
+                                {% if produit.rupture %}
+                                    <strong>Rupture de stock</strong>
+                                {% else %}
+                                    Quantité: {{ produit.quantite }}
+                                {% endif %}
+                            </li>
+
+                        </ul>
+
+
+                        <div class="d-grid gap-3 m-1">
+                            <a href="#" class="btn btn-primary mb-1">Ajouter au panier</a>
+                            <a href="{{ path('update',{'id':produit.id}) }}" class="btn btn-primary">Modifier</a>
+                        </div>
+
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
+
+
+
 
 {% endblock %}

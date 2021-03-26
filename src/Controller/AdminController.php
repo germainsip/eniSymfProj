@@ -65,7 +65,50 @@ class AdminController extends AbstractController
      */
     public function update(Request $request, $id): Response
     {
-        return $this->render('admin/create.html.twig');
+        $em=$this->getDoctrine()->getManager();
+        $produitRepository=$em->getRepository(Produit::class);
+        $produit=$produitRepository->find($id);
+
+        $img=$produit->getLienImage();
+
+
+        $formProduit= $this->createForm(ProduitType::class,$produit);
+
+        // ajoute un bouton submit
+
+        $formProduit->add('creer', SubmitType::class,array(
+            'label'=>'Valider',
+            'validation_groups'=>array('all')
+        ));
+        $formProduit->handleRequest($request);
+
+        if($request->isMethod('post') && $formProduit->isValid() ){
+
+            // insertion dans la base
+
+            $file = $formProduit['lienImage']->getData();
+
+            if(!is_string($file)){
+
+                $filename=$file->getClientOriginalName();
+                $file->move(
+                    $this->getParameter('images_directory'),
+                    $filename
+                );
+                $produit->setLienImage($filename);
+            } else {
+
+                $produit->setLienImage($img);
+            }
+            $em->persist($produit);
+            $em->flush();
+            $session=$request->getSession();
+            $session->getFlashBag()->add('message','le produit a été mis à jour');
+            $session->set('statut','success');
+            return $this->redirect($this->generateUrl('liste'));
+        }
+        return $this->render('admin/create.html.twig',
+            array('my_form'=>$formProduit->createView()));
     }
 
     /**

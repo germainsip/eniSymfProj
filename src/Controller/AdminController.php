@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Produit;
 use App\Form\ProduitType;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -115,8 +118,22 @@ class AdminController extends AbstractController
      * @Route("/delete/{id}", name="delete")
      * @param Request $request
      * @param $id
+     * @param EntityManagerInterface $em
+     * @return Response
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, $id, EntityManagerInterface $em): Response
     {
+        $produitRepository=$em->getRepository(Produit::class);
+
+        $produit = $produitRepository->find($id);
+        //dd($produit);
+        $em->remove($produit);
+        $em->flush();
+        dd($this->getParameter('images_directory'));
+        unlink($this->getParameter('images_directory').$produit->getLienImage());
+        $session = $request->getSession();
+        $session->getFlashBag()->add('message','le produit a été supprimé');
+        $session->set('statut','success');
+        return $this->redirect($this->generateUrl('liste'));
     }
 }
